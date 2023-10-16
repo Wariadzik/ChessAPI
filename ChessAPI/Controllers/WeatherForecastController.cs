@@ -11,8 +11,6 @@ namespace ChessAPI.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        
-
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly IWeatherForecastService _service;
 
@@ -23,10 +21,18 @@ namespace ChessAPI.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public IEnumerable<WeatherForecast> GetWeather()
         {
             var result = _service.Get();
             return result;
+        }
+
+        [HttpGet("data/{name}")]
+        public string Get2([FromQuery]int favoriteNumber, [FromRoute]string name)
+        {
+            if (favoriteNumber == 0) return "You are a little zero!";
+
+            return $"Hello {name}";
         }
     }
 }
