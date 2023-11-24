@@ -27,12 +27,22 @@ namespace ChessAPI.Controllers
             return result;
         }
 
-        [HttpGet("data/{name}")]
-        public string Get2([FromQuery]int favoriteNumber, [FromRoute]string name)
+        [HttpGet("extra")]
+        public IEnumerable<WeatherForecast> GetWeatherExtra([FromQuery]int resultCount, [FromQuery] int minT, [FromQuery] int maxT)
         {
-            if (favoriteNumber == 0) return "You are a little zero!";
+            var result = _service.GetExtra(resultCount, minT, maxT);
+            return result;
+        }
 
-            return $"Hello {name}";
+        [HttpPost("/generate")]
+        public ActionResult<IEnumerable<WeatherForecast>> GenerateWeather([FromQuery] int resultCount, [FromBody] TempReq tempReq)
+        {
+            if (resultCount <= 0 || tempReq.Max<tempReq.Min)
+            {
+                return BadRequest();
+            }
+            var result = _service.GetExtra(resultCount, tempReq.Min, tempReq.Max);
+            return Ok(result);
         }
     }
 }

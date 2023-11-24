@@ -21,5 +21,16 @@ namespace ChessAPI
             })
             .ToArray();
         }
+        public IEnumerable<WeatherForecast> GetExtra(int resultCount, int minT, int maxT)
+        {
+            var rng = new Random();
+            return Enumerable.Range(1, resultCount).Select(index => new WeatherForecast
+            {
+                Date = DateTime.Now.AddDays(index),
+                TemperatureC = rng.Next(minT, maxT),
+                Summary = Summaries[rng.Next(Summaries.Length)]
+            })
+            .ToArray();
+        }
     }
 }
